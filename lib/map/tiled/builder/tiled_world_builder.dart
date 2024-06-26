@@ -148,6 +148,7 @@ class TiledWorldBuilder {
     for (var tile in tileLayer.data ?? const <int>[]) {
       if (tile != 0) {
         var data = _getDataTile(tile);
+
         if (data != null) {
           bool tileIsAbove = ((data.type?.contains(ABOVE_TYPE) ?? false) ||
               (data.tileClass?.contains(ABOVE_TYPE) ?? false) ||
@@ -341,6 +342,7 @@ class TiledWorldBuilder {
         tileSetContain,
         (index - tilesetFirsTgId),
       );
+
       return TiledItemTileSet(
         type: object.type,
         collisions: object.collisions,
@@ -471,6 +473,8 @@ class TiledWorldBuilder {
               height,
               ellipse: object.ellipse ?? false,
               polygon: object.polygon,
+              // Angle here is not used because
+              // collision object is already rotated
             ),
           );
         }
@@ -558,11 +562,13 @@ class TiledWorldBuilder {
     bool ellipse = false,
     List<Polygon>? polygon,
     bool isObjectCollision = false,
+    double? angle,
   }) {
     ShapeHitbox ca = RectangleHitbox(
       size: Vector2(width, height),
       position: isObjectCollision ? null : Vector2(x, y),
       isSolid: true,
+      angle: angle,
     );
 
     if (ellipse == true) {
